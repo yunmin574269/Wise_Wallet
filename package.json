@@ -1,8 +1,11 @@
 {
-    "name":"wise-wallet",
+    "name": "wise-wallet",
     "version": "0.1.0",
     "main": "src/main.js",
     "scripts": {
         "start": "electron src/main.js"
+    },
+    "devDependencies": {
+        "electron": "^2.0.8"
     }
 }
