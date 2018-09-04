@@ -1,11 +1,12 @@
 {
-    "name": "wise-wallet",
-    "version": "0.1.0",
-    "main": "src/main.js",
-    "scripts": {
-        "start": "electron src/main.js"
-    },
-    "devDependencies": {
-        "electron": "^2.0.8"
-    }
+  "name": "wise-wallet",
+  "version": "0.1.0",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "electron src/main.js"
+  },
+  "devDependencies": {
+    "electron": "^2.0.8",
+    "eslint": "^5.5.0"
+  }
 }

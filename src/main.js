@@ -1,4 +1,6 @@
-const {app, ipcMain} = require('electron');
+"use strict";
+
+const {app} = require('electron');
 
 const SplashWindow = require('./windows/controllers/splash');
 const SettingWindow = require('./windows/controllers/settings');

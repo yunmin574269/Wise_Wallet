@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 const path = require('path');
 const { BrowserWindow } = require('electron');
@@ -37,6 +37,10 @@ class SplashWindow {
   hide() {
     this.splashWindow.hide();
     this.isShown = false;
+  }
+
+  close() {
+      this.splashWindow.close();
   }
 }
 
