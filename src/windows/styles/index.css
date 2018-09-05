@@ -1,0 +1,17 @@
+body {
+    margin: 0;
+    background: #f0f0f0;
+}
+
+.drag-bar {
+    min-height: 20px;
+}
+
+.dapp-header {
+    padding-left: 80px;
+    padding-right: 80px;
+    display: flex;
+    height: 80px;
+    background: #f0f0f0;
+    align-items: flex-end;
+}
