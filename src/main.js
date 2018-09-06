@@ -20,6 +20,11 @@ class Main{
     initApp() {
         app.on('ready', ()=> {
             this.createSplashWindow();
+            this.createIndexWindow();
+            setTimeout(function(obj) {
+                obj.splashWindow.close();
+                obj.indexWindow.show();
+            }, 2000, this);
         });
 
         app.on('activate', () => {

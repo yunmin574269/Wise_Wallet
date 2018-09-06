@@ -17,7 +17,7 @@ class Index {
       title: 'Wise Wallet',
       resizable: true,
       center: true,
-      show: true,
+      show: false,
       frame: true,
       autoHideMenuBar: true,
       alwaysOnTop: false,

@@ -2,6 +2,7 @@
 <html lang="en">
     <head>
         <link href="../styles/index.css" rel="stylesheet">
+        <link href="../styles/iconfont.css" rel="stylesheet">
         <meta charset="UTF-8">
         <title>Wise Wallet</title>
     </head>
@@ -9,9 +10,21 @@
     <body>
         <div class="drag-bar"></div>
         <header class="dapp-header">
+            <ul>
+                <li>
+                    <a class="active">
+                        <i class="iconfont icon-wallet"></i>
+                        <span>WALLET</span>
+                    </a>
+                </li>
+                <li>
+                    <a>
+                            <i class="iconfont icon-send"></i>
+                        <span>SEND</span>
+                    </a>
+                </li>
+            </ul>
         </header>
-        <div>
-            <iframe></iframe>
-        </div>
+        <iframe class="content-page"></iframe>
     </body>
 </html>
