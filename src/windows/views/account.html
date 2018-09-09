@@ -1,12 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-  <meta charset="UTF-8">
-</head>
+  <head>
+    <meta charset="UTF-8">
+    <script src="../lib/jquery-3.3.1.min.js"></script>
+  </head>
 
-<body>
-  account
-</body>
+  <body>
+    <main class="dapp-content">
+      <em contenteditable="true">Account1</em>
+    </main>
+  </body>
+
+  <script language="javascript" type="text/javascript">
+    $(document).ready(function () {
+      alert(localStorage.getItem("account-key"));
+    });
+  </script>
 
 </html>
