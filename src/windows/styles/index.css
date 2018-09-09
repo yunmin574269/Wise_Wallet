@@ -46,7 +46,7 @@ body {
 
 .dapp-header > ul > li > a.active {
     border-bottom-color: #fff;
-    
+    color: darkturquoise;
 }
 
 .dapp-header > ul > li > a > i {
