@@ -8,5 +8,9 @@
   "devDependencies": {
     "electron": "^2.0.8",
     "eslint": "^5.5.0"
+  },
+  "dependencies": {
+    "electron-rebuild": "^1.8.2",
+    "sqlite3": "^4.0.2"
   }
 }

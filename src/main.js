@@ -5,6 +5,7 @@ const {app} = require('electron');
 const SplashWindow = require('./windows/controllers/splash');
 const SettingWindow = require('./windows/controllers/settings');
 const IndexWindow = require('./windows/controllers/index');
+const SqliteHandle = require('./windows/lib/sqlite-handle');
 
 class Main{
     constructor() {
@@ -14,6 +15,7 @@ class Main{
     }
 
     init() {
+        new SqliteHandle().init();
         this.initApp();
     }
 
