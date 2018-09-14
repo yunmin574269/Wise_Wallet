@@ -6,7 +6,7 @@ const SplashWindow = require('./windows/controllers/splash');
 const SettingWindow = require('./windows/controllers/settings');
 const IndexWindow = require('./windows/controllers/index');
 const SqliteHandle = require('./windows/lib/sqlite-handle');
-const IpcMain = require('./windows/lib/ipcmain-handle');
+const IpcMainHandle = require('./windows/lib/ipcmain-handle');
 
 class Main{
     constructor() {
@@ -17,7 +17,6 @@ class Main{
 
     init() {
         new SqliteHandle().init();
-        new IpcMainHandle().init();
         this.initApp(); 
     }
 

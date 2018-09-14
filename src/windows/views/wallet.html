@@ -42,7 +42,7 @@
     const SqliteHandle = require('../lib/sqlite-handle');
     //alert(new SqliteHandle().getOne('1'));
     //alert(new SqliteHandle());
-    $(".wallet-box-list").append(new Templete().account());
+    $(".wallet-box-list").append(Templete.account());
 
     $(".wallet-box").click(function(){
       $('.dapp-header a', parent.document).removeClass("active");
