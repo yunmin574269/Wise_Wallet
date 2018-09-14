@@ -1,11 +1,12 @@
 "use strict";
 
-const {app} = require('electron');
+const {app, ipcMain} = require('electron');
 
 const SplashWindow = require('./windows/controllers/splash');
 const SettingWindow = require('./windows/controllers/settings');
 const IndexWindow = require('./windows/controllers/index');
 const SqliteHandle = require('./windows/lib/sqlite-handle');
+const IpcMain = require('./windows/lib/ipcmain-handle');
 
 class Main{
     constructor() {
@@ -16,8 +17,16 @@ class Main{
 
     init() {
         new SqliteHandle().init();
-        this.initApp();
+        new IpcMainHandle().init();
+        this.initApp(); 
     }
+
+    // initEvent() {
+    //     ipcMain.on('get-accounts', (event, arg) => {
+    //         console.log(arg) // prints "ping"
+    //         event.sender.send('accounts', 'pong')
+    //       });
+    // }
 
     initApp() {
         app.on('ready', ()=> {

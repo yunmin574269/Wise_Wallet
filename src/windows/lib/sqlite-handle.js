@@ -38,7 +38,7 @@ class SqliteHandle {
         });
     }
 
-    getOne(private_key) {
+    getOne(private_key, callback) {
         var db = new sqlite3.Database(fileName, function(err){
             db.get("select * from account_data " +
                     "where private_key=$key", 
@@ -46,9 +46,19 @@ class SqliteHandle {
                         $key: private_key
                     },
                     function(err,row){
-                        console.log(row);
                         db.close();
+                        if(callback != undefined) callback(row);
                     });
+        });
+    }
+
+    getAll(callback) {
+        var db = new sqlite3.Database(fileName, function(err) {
+            db.all("select * from account_data",
+            function(err, rows) {
+                db.close();
+                if(callback != undefined) callback(rows);
+            });
         });
     }
 
@@ -62,7 +72,7 @@ class SqliteHandle {
                         $name: name
                     }),
                     function(err){
-                        this.close();
+                        db.close();
                     }
         });
     }

@@ -7,6 +7,7 @@
   <link href="../styles/wallet.css" rel="stylesheet">
   <link href="../styles/iconfont.css" rel="stylesheet">
   <script src="../lib/jquery-3.3.1.min.js"></script>
+  <script src="../lib/templete.js"></script>
 </head>
 
 <body>
@@ -29,7 +30,20 @@
   </main>
 </body>
 <script language="javascript" type="text/javascript">
+  window.require = window.parent.require;
+
   $(document).ready(function () {
+    const {ipcRenderer} = require('electron');
+    ipcRenderer.once('accounts', (event, arg) => {
+    });
+
+    ipcRenderer.send('get-accounts', '');
+
+    const SqliteHandle = require('../lib/sqlite-handle');
+    //alert(new SqliteHandle().getOne('1'));
+    //alert(new SqliteHandle());
+    $(".wallet-box-list").append(new Templete().account());
+
     $(".wallet-box").click(function(){
       $('.dapp-header a', parent.document).removeClass("active");
 
