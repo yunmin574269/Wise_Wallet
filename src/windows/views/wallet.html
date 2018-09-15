@@ -14,7 +14,7 @@
   <main class="dapp-content">
     <h1><strong>Account</strong> overview</h1>
     <div class="wallet-box-list">
-      <a class="wallet-box" href="0xF6026cE0f721cd8Ca85624bCb0Ca0De9E54986a4" onclick="return false;">
+      <!-- <a class="wallet-box" href="0xF6026cE0f721cd8Ca85624bCb0Ca0De9E54986a4" onclick="return false;">
         <span></span>
         <h3 class="not-ens-name">
           <i class="iconfont icon-key"></i>
@@ -25,7 +25,7 @@
           <span>wdc</span>
         </span>
         <span class="account-id">0xF6026cE0f721cd8Ca85624bCb0Ca0De9E54986a4</span>
-      </a>
+      </a> -->
     </div>
   </main>
 </body>
@@ -40,9 +40,11 @@
     ipcRenderer.send('get-accounts', '');
 
     const SqliteHandle = require('../lib/sqlite-handle');
-    //alert(new SqliteHandle().getOne('1'));
-    //alert(new SqliteHandle());
-    $(".wallet-box-list").append(Templete.account());
+    new SqliteHandle().getAll(function(rows) {
+      rows.forEach(element => {
+        $(".wallet-box-list").append(Templete.account(element.address, element.name, 0));
+      });
+    });
 
     $(".wallet-box").click(function(){
       $('.dapp-header a', parent.document).removeClass("active");

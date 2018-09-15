@@ -1,10 +1,11 @@
 "use strict";
 
-var sqlite3 = require('sqlite3').verbose();
-var fs = require('fs');
+const sqlite3 = require('sqlite3').verbose();
+const fs = require('fs');
 
-var path = __dirname + "/../../../keystore";
-var fileName = path + "/wallet.dat";
+const path = __dirname + "/../../../keystore";
+const fileName = path + "/wallet.dat";
+const AccountHandle = require('./account-handle');
 
 class SqliteHandle {
     constructor() {}
@@ -17,6 +18,10 @@ class SqliteHandle {
                         "private_key varchar(600) PRIMARY KEY     NOT NULL," +
                         "address varchar(100) NOT NULL," +
                         "name varchar(50) NOT NULL)",function(){
+                    for(let i=1; i<=3; i++) {
+                        let account = new AccountHandle().createAccount();
+                        new SqliteHandle().add(account.secretKey, account.addr, 'Account' + i);
+                    }
                     db.close();
                 });
             });
@@ -24,7 +29,7 @@ class SqliteHandle {
     }
 
     add(private_key, address, name) {
-        var db = new sqlite3.Database(fileName,  function(err){
+        let db = new sqlite3.Database(fileName,  function(err){
             db.run("insert into account_data(" +
                     "private_key, address, name) " +
                     "values($key,$address,$name)",
@@ -39,7 +44,7 @@ class SqliteHandle {
     }
 
     getOne(private_key, callback) {
-        var db = new sqlite3.Database(fileName, function(err){
+        let db = new sqlite3.Database(fileName, function(err){
             db.get("select * from account_data " +
                     "where private_key=$key", 
                     {
@@ -53,7 +58,7 @@ class SqliteHandle {
     }
 
     getAll(callback) {
-        var db = new sqlite3.Database(fileName, function(err) {
+        let db = new sqlite3.Database(fileName, function(err) {
             db.all("select * from account_data",
             function(err, rows) {
                 db.close();
@@ -63,7 +68,7 @@ class SqliteHandle {
     }
 
     modifyName(private_key, name) {
-        var db = new sqlite3.Database(fileName, function(err){
+        let db = new sqlite3.Database(fileName, function(err){
             db.run("update account_data " +
                     "set name=$name " +
                     "where private_key = $key",

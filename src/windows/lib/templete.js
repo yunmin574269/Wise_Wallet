@@ -2,9 +2,9 @@ class Templete
 {
     constructor() {}
 
-    static account(key, address, name, balance) {
+    static account(address, name, balance) {
         return `
-        <a class="wallet-box" href="${key}" onclick="return false;">
+        <a class="wallet-box" href="${address}" onclick="return false;">
             <span></span>
             <h3 class="not-ens-name">
                 <i class="iconfont icon-key"></i>

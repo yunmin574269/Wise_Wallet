@@ -13,7 +13,7 @@ const NetType = {
 class AccountHandle {
     constructor() {}
 
-    createAccount (netType) {
+    createAccount (netType = NetType.Public_Net) {
         let keyPair = this.createKeyPair();
         
         let s1 = keccak512(keyPair.publicKey);
@@ -24,7 +24,7 @@ class AccountHandle {
         }
         let v = keccak512(s3).substring(0, 8);
         let s4 = s3 + v;
-        let addr = new bs58().decode(s4);
+        let addr = new bs58().encode(s4);
         return {
             'secretKey': keyPair.secretKey,
             'publicKey': keyPair.publicKey,
