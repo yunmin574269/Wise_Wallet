@@ -44,14 +44,16 @@
       rows.forEach(element => {
         $(".wallet-box-list").append(Templete.account(element.address, element.name, 0));
       });
+
+      $(".wallet-box").click(function(){
+        $('.dapp-header a', parent.document).removeClass("active");
+
+        localStorage.setItem("account-key", $(this).attr("href"));
+        $(location).attr("href", "account.html");
+      });
     });
 
-    $(".wallet-box").click(function(){
-      $('.dapp-header a', parent.document).removeClass("active");
-
-      localStorage.setItem("account-key", $(this).attr("href"));
-      $(location).attr("href", "account.html");
-    });
+    
   });
 </script>
 </html>
