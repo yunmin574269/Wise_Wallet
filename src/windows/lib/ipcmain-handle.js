@@ -11,3 +11,5 @@ class IpcMainHandle
         
     }
 }
+
+module.exports = IpcMainHandle;

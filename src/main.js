@@ -16,6 +16,7 @@ class Main{
     }
 
     init() {
+        new IpcMainHandle().init();
         new SqliteHandle().init();
         this.initApp(); 
     }
