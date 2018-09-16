@@ -18,7 +18,7 @@ class SqliteHandle {
                         "private_key varchar(600) PRIMARY KEY     NOT NULL," +
                         "address varchar(100) NOT NULL," +
                         "name varchar(50) NOT NULL)",function(){
-                    for(let i=1; i<=3; i++) {
+                    for(let i=1; i<=10; i++) {
                         let account = new AccountHandle().createAccount();
                         new SqliteHandle().add(account.secretKey, account.addr, 'Account' + i);
                     }

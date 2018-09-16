@@ -7,6 +7,8 @@ const SettingWindow = require('./windows/controllers/settings');
 const IndexWindow = require('./windows/controllers/index');
 const SqliteHandle = require('./windows/lib/sqlite-handle');
 const IpcMainHandle = require('./windows/lib/ipcmain-handle');
+const nacl = require('./windows/lib/nacl.min.js');
+const AccountHandle = require('./windows/lib/account-handle');
 
 class Main{
     constructor() {
@@ -19,7 +21,18 @@ class Main{
         new IpcMainHandle().init();
         new SqliteHandle().init();
         this.initApp(); 
+        //this.test();
     }
+
+    // test() {
+    //     let seed = new Uint8Array(32);
+    //     for(let i=0; i<32; i++)
+    //     {
+    //         seed[i] = 0;
+    //     }
+    //     let keyPair = nacl.sign.keyPair.fromSeed(seed);
+    //     new AccountHandle().createAccountWithPubKey(keyPair.publicKey);
+    // }
 
     // initEvent() {
     //     ipcMain.on('get-accounts', (event, arg) => {

@@ -2,7 +2,7 @@
 
 const bs58 = require('./base58');
 const keccak512 = require('./sha3').keccak512;
-const hash = require('./hashes.min.js');
+const hash = require('./hashes.js');
 const nacl = require('./nacl.min.js');
 const NetType = {
     'Public_Net': 1,
@@ -17,14 +17,34 @@ class AccountHandle {
         let keyPair = this.createKeyPair();
         
         let s1 = keccak512(keyPair.publicKey);
-        let s2 = new hash.RMD160().hex(s1);
+        let s2 = new hash.RMD160().hex(this.Hex2Str(s1));
         let s3 = '00' + s2;
         if(netType == NetType.Test_Net) {
             s3 = 'S'.charCodeAt() + s2;
         }
-        let v = keccak512(s3).substring(0, 8);
+        let v = keccak512(this.Hex2Array(s3)).substring(0, 8);
         let s4 = s3 + v;
-        let addr = new bs58().encode(s4);
+        let addr = new bs58().encode(this.Hex2Array(s4));
+        return {
+            'secretKey': keyPair.secretKey,
+            'publicKey': keyPair.publicKey,
+            'addr': addr
+        }
+    }
+
+    createAccountWithPubKey (pubKey, netType = NetType.Public_Net) {
+        let s1 = keccak512(pubKey);
+
+        let s2 = new hash.RMD160({'utf8':false}).hex(this.Hex2Str(s1));
+        let s3 = '00' + s2;
+        if(netType == NetType.Test_Net) {
+            s3 = 'S'.charCodeAt() + s2;
+        }
+        
+        let v = keccak512(this.Hex2Array(s3)).substring(0, 8);
+        let s4 = s3 + v;
+
+        let addr = new bs58().encode(this.Hex2Array(s4));
         return {
             'secretKey': keyPair.secretKey,
             'publicKey': keyPair.publicKey,
@@ -34,6 +54,22 @@ class AccountHandle {
 
     createKeyPair() {
         return new nacl.sign.keyPair();
+    }
+
+    Hex2Str(hex) {
+        let ret = '';
+        for(let i=0; i<hex.length; i+=2) {
+            ret += String.fromCharCode(parseInt(hex.substr(i,2), 16));
+        }
+        return ret;
+    }
+
+    Hex2Array(hex) {
+        let ret = new Array();
+        for(let i=0; i<hex.length; i+=2) {
+            ret.push(parseInt(hex.substr(i,2), 16));
+        }
+        return ret;
     }
 }
 
