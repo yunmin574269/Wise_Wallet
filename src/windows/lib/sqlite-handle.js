@@ -43,12 +43,12 @@ class SqliteHandle {
         });
     }
 
-    getOne(private_key, callback) {
+    getOne(addr, callback) {
         let db = new sqlite3.Database(fileName, function(err){
             db.get("select * from account_data " +
-                    "where private_key=$key", 
+                    "where address=$addr", 
                     {
-                        $key: private_key
+                        $addr: addr
                     },
                     function(err,row){
                         db.close();

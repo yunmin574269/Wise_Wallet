@@ -8,13 +8,32 @@
 
   <body>
     <main class="dapp-content">
-      <em contenteditable="true">Account1</em>
+      <div>
+          <h3 class="not-ens-name">
+              <i class="iconfont icon-key"></i>
+              <em contenteditable="true" class="account-name"></em>
+          </h3>
+          <span class="account-balance">
+            <span>wdc</span>
+          </span>
+          <span class="account-id"></span>
+      </div>
+      
     </main>
   </body>
 
   <script language="javascript" type="text/javascript">
+    window.require = window.parent.require;
+
     $(document).ready(function () {
-      alert(localStorage.getItem("account-key"));
+      let addr = localStorage.getItem("account-key");
+
+      const SqliteHandle = require('../lib/sqlite-handle');
+
+      new SqliteHandle().getOne(addr, function(row) {
+        $(".account-name").text(row.name);
+        $(".account-id").text(row.address);
+      });
     });
   </script>
 
