@@ -33,11 +33,11 @@
   window.require = window.parent.require;
 
   $(document).ready(function () {
-    const {ipcRenderer} = require('electron');
-    ipcRenderer.once('accounts', (event, arg) => {
-    });
+    // const {ipcRenderer} = require('electron');
+    // ipcRenderer.once('accounts', (event, arg) => {
+    // });
 
-    ipcRenderer.send('get-accounts', '');
+    // ipcRenderer.send('get-accounts', '');
 
     const SqliteHandle = require('../lib/sqlite-handle');
     new SqliteHandle().getAll(function(rows) {
@@ -53,7 +53,6 @@
       });
     });
 
-    
   });
 </script>
 </html>
