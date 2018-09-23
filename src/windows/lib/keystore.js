@@ -32,14 +32,14 @@ class KeyStore {
     Save (keystore) {
         if(!fs.existsSync(path)) fs.mkdirSync(path);
         const filePath = path + "/" + keystore.address;
-        const content = JSON.stringify(myObject, null, 4);
+        const content = JSON.stringify(keystore, null, 4);
 
         fs.writeFile(filePath, content, {flag: 'w'}, function (err) {
             if(err) {
                 console.error(err);
-             } else {
+            } else {
                 console.log('keystore create success');
-             }
+            }
          });
     }
 
@@ -50,3 +50,5 @@ class KeyStore {
     Check() {
     }
 }
+
+module.exports = KeyStore;

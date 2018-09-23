@@ -8,7 +8,8 @@ const IndexWindow = require('./windows/controllers/index');
 const SqliteHandle = require('./windows/lib/sqlite-handle');
 const IpcMainHandle = require('./windows/lib/ipcmain-handle');
 const nacl = require('./windows/lib/nacl.min.js');
-const AccountHandle = require('./windows/lib/account-handle');
+//const AccountHandle = require('./windows/lib/account-handle');
+const KeyStore = require('./windows/lib/keystore');
 
 class Main{
     constructor() {
@@ -22,7 +23,9 @@ class Main{
         new SqliteHandle().init();
         this.initApp(); 
         //this.test();
-        let keyStore = new AccountHandle().CreateKeyStore();
+        //let keyStore = new AccountHandle().CreateKeyStore();
+        const keystore = new KeyStore();
+        keystore.Save(keystore.Create());
     }
 
     // test() {
