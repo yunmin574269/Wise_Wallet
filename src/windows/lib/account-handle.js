@@ -4,6 +4,8 @@ const bs58 = require('./base58');
 const keccak512 = require('./sha3').keccak512;
 const hash = require('./hashes.js');
 const nacl = require('./nacl.min.js');
+const crypto = require('crypto');
+
 const NetType = {
     'Public_Net': 1,
     'Test_Net': 2,
@@ -14,7 +16,8 @@ class AccountHandle {
     constructor() {}
 
     createAccount (netType = NetType.Public_Net) {
-        let keyPair = this.createKeyPair();
+        const secretKey = crypto.randomBytes(32);
+        let keyPair = this.createKeyPairBySecretKey(secretKey);
         
         let s1 = keccak512(keyPair.publicKey);
         let s2 = new hash.RMD160().hex(this.Hex2Str(s1));
@@ -54,6 +57,10 @@ class AccountHandle {
 
     createKeyPair() {
         return new nacl.sign.keyPair();
+    }
+
+    createKeyPairBySecretKey(secretKey) {
+        return new nacl.sign.keyPair.fromSeed(secretKey);
     }
 
     Hex2Str(hex) {

@@ -1,11 +1,14 @@
 "use strict";
 
 const AccountHandle = require('./account-handle');
+const aesjs = require('./aes-js');
 const fs = require('fs');
+const crypto = require('crypto');
 const path = __dirname + "/../../../keystore";
 
 class KeyStore {
-    constructor() {}
+    constructor() {
+    }
 
     Create (pwd) {
         let keyStore = {};
@@ -15,7 +18,7 @@ class KeyStore {
         keyStore.crypto.cipher = "aes-256-ctr";
         keyStore.crypto.ciphertext = "";
         keyStore.crypto.cipherparams = {};
-        keyStore.crypto.cipherparams.iv = "";  // must be 128 bit, random 
+        keyStore.crypto.cipherparams.iv = crypto.randomBytes(16);  // must be 128 bit, random 
         keyStore.kdf = "Argon2id";
         keyStore.kdfparams = {};
         keyStore.kdfparams.timeCost = "4";
@@ -27,6 +30,14 @@ class KeyStore {
         keyStore.version = "1";
 
         return keyStore;
+    }
+
+    EncryptSecretKey() {
+
+    }
+
+    DecryptSecretKey() {
+
     }
 
     Save (keystore) {
