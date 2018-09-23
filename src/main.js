@@ -22,6 +22,7 @@ class Main{
         new SqliteHandle().init();
         this.initApp(); 
         //this.test();
+        let keyStore = new AccountHandle().CreateKeyStore();
     }
 
     // test() {

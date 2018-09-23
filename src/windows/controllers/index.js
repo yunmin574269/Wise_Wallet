@@ -34,7 +34,7 @@ class Index {
     this.isShown = true;
 
     // 打开开发者工具
-    this.index.webContents.openDevTools()
+    //this.index.webContents.openDevTools()
   }
 
   hide() {
