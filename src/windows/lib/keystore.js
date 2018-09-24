@@ -11,7 +11,7 @@ class KeyStore {
     constructor() {
     }
 
-    Create (pwd) {
+    async Create (pwd) {
         let keyStore = {};
         const account = new AccountHandle().createAccount();
         keyStore.address = account.addr;
@@ -30,6 +30,11 @@ class KeyStore {
         keyStore.id = "";
         keyStore.version = "1";
 
+        const options = {
+            timeCost: 4, memoryCost: 4096, parallelism: 2, type: argon2.argon2id
+        };
+        const argon2_hash = await argon2.hash(pwd, options); 
+
         return keyStore;
     }
 
@@ -39,13 +44,6 @@ class KeyStore {
 
     DecryptSecretKey() {
 
-    }
-
-    Argon2idEncrypt() {
-        const options = {
-            timeCost: 4, memoryCost: 4096, parallelism: 2, type: argon2.argon2id
-        };
-        
     }
 
     Save (keystore) {

@@ -25,7 +25,7 @@ class Main{
         //this.test();
         //let keyStore = new AccountHandle().CreateKeyStore();
         const keystore = new KeyStore();
-        keystore.Save(keystore.Create());
+        keystore.Save(keystore.Create('123456'));
     }
 
     // test() {
