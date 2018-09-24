@@ -96,19 +96,23 @@ class AccountHandle {
     }
 
     Hex2Str(hex) {
-        let ret = '';
-        for(let i=0; i<hex.length; i+=2) {
-            ret += String.fromCharCode(parseInt(hex.substr(i,2), 16));
-        }
-        return ret;
+        //let ret = '';
+        // for(let i=0; i<hex.length; i+=2) {
+        //     ret += String.fromCharCode(parseInt(hex.substr(i,2), 16));
+        // }
+        //return ret;
+
+        const obj = Buffer.from(hex, 'hex');
+        return obj.toString('latin1');
     }
 
     Hex2Array(hex) {
-        let ret = new Array();
-        for(let i=0; i<hex.length; i+=2) {
-            ret.push(parseInt(hex.substr(i,2), 16));
-        }
-        return ret;
+        // let ret = new Array();
+        // for(let i=0; i<hex.length; i+=2) {
+        //     ret.push(parseInt(hex.substr(i,2), 16));
+        // }
+        // return ret;
+        return Buffer.from(hex, 'hex');
     }
 
     

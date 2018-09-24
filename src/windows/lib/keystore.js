@@ -42,9 +42,10 @@ class KeyStore {
     }
 
     Argon2idEncrypt() {
-        // const options = {
-        //     timeCost: 4, memoryCost: 4096, parallelism: 2, type: argon2.argon2id
-        // };
+        const options = {
+            timeCost: 4, memoryCost: 4096, parallelism: 2, type: argon2.argon2id
+        };
+        
     }
 
     Save (keystore) {
