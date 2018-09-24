@@ -16,7 +16,7 @@ class AccountHandle {
     constructor() {}
 
     createAccount (netType = NetType.Public_Net) {
-        const secretKey = crypto.randomBytes(32);
+        const secretKey = this.createSecretKey();
         let keyPair = this.createKeyPairBySecretKey(secretKey);
         
         let s1 = keccak512(keyPair.publicKey);
@@ -63,6 +63,38 @@ class AccountHandle {
         return new nacl.sign.keyPair.fromSeed(secretKey);
     }
 
+    createSecretKey() {
+        let secretKey;
+        do {
+            secretKey = crypto.randomBytes(32);
+        }
+        while(!this.verifyKey(secretKey));
+        return secretKey;
+    }
+
+    verifyKey (secretKey) {
+        if(secretKey.length != 32) return false;
+        for (let i=0; i<32; i++) {
+            if(typeof secretKey[i] !== 'number') return false;
+            if(secretKey[i] > 0xff) return false;
+        }
+        const MaxVal = [
+            0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 
+            0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xfe,
+            0xba, 0xae, 0xdc, 0xe6, 0xaf, 0x48, 0xa0, 0x3b,
+            0xbf, 0xd2, 0x5e, 0x8c, 0xd0, 0x36, 0x41, 0x41
+        ];
+        for(let i=0; i<MaxVal.length; i++) {
+            if(MaxVal[i] < secretKey[i]) {
+                return false;
+            }
+            else if (MaxVal[i] > secretKey[i]) {
+                return true;
+            }
+        }
+        return true;
+    }
+
     Hex2Str(hex) {
         let ret = '';
         for(let i=0; i<hex.length; i+=2) {
@@ -78,6 +110,8 @@ class AccountHandle {
         }
         return ret;
     }
+
+    
 }
 
 module.exports = AccountHandle;
