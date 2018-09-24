@@ -2,6 +2,7 @@
 
 const AccountHandle = require('./account-handle');
 const aesjs = require('./aes-js');
+const argon2 = require('argon2');
 const fs = require('fs');
 const crypto = require('crypto');
 const path = __dirname + "/../../../keystore";
@@ -38,6 +39,12 @@ class KeyStore {
 
     DecryptSecretKey() {
 
+    }
+
+    Argon2idEncrypt() {
+        // const options = {
+        //     timeCost: 4, memoryCost: 4096, parallelism: 2, type: argon2.argon2id
+        // };
     }
 
     Save (keystore) {
