@@ -18,14 +18,15 @@ class Main{
         this.indexWindow = null;
     }
 
-    init() {
+    async init() {
         new IpcMainHandle().init();
         new SqliteHandle().init();
         this.initApp(); 
         //this.test();
         //let keyStore = new AccountHandle().CreateKeyStore();
         const keystore = new KeyStore();
-        keystore.Save(keystore.Create('123456'));
+        const savefile = await keystore.Create('123456');
+        keystore.Save(savefile);
     }
 
     // test() {
