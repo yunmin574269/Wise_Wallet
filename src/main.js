@@ -25,8 +25,9 @@ class Main{
         //this.test();
         //let keyStore = new AccountHandle().CreateKeyStore();
         const keystore = new KeyStore();
-        const savefile = await keystore.Create('123456');
-        keystore.Save(savefile);
+        // const savefile = await keystore.Create('123456');
+        // keystore.Save(savefile);
+        await keystore.DecryptSecretKey('1BYryVWkZJki9s3YYSS9pZhwApnG9qLrw3', '123456');
     }
 
     // test() {

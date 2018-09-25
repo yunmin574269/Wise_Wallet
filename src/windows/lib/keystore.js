@@ -34,9 +34,10 @@ class KeyStore {
         keyStore.kdfparams.salt = crypto.randomBytes(32).toString('hex'); // random
         keyStore.version = "1";
 
+        const salt = Buffer.from(keyStore.kdfparams.salt, 'hex');
         const options = {
             timeCost: 4, memoryCost: 4096, parallelism: 2, type: argon2.argon2id, hashLength: 32, 
-            version: 0x13, raw: true
+            version: 0x13, raw: true, salt
         };
         const p1 = Buffer.from(pwd, 'ascii').toString('hex');
         const s1 = keyStore.kdfparams.salt + p1;
@@ -60,8 +61,31 @@ class KeyStore {
 
     }
 
-    DecryptSecretKey() {
+    async DecryptSecretKey(addr, pwd) {
+        const keyStore = this.Read(addr);
+        if(keyStore == null) return null;
 
+        const salt = Buffer.from(keyStore.kdfparams.salt, 'hex');
+
+        const options = {
+            timeCost: 4, memoryCost: 4096, parallelism: 2, type: argon2.argon2id, hashLength: 32, 
+            version: 0x13, raw: true, salt
+        };
+        const p1 = Buffer.from(pwd, 'ascii').toString('hex');
+        const s1 = keyStore.kdfparams.salt + p1;
+        const derivedKey = await argon2.hash(s1, options);
+
+        const dc = derivedKey.toString('hex') + keyStore.crypto.ciphertext;
+        const dc_buf = Buffer.from(dc, 'hex');
+        const mac = keccak512(dc_buf);
+
+        if(mac != keyStore.mac) return null;
+
+        const vi = Buffer.from(keyStore.crypto.cipherparams.iv, 'hex');
+        const aesCtr = new aesjs.ModeOfOperation.ctr(derivedKey, new aesjs.Counter(vi));
+        var encryptedBytes = aesjs.utils.hex.toBytes(keyStore.crypto.ciphertext);
+        var decryptedBytes = aesCtr.decrypt(encryptedBytes);
+        return decryptedBytes;
     }
 
     Save (keystore) {
@@ -80,6 +104,9 @@ class KeyStore {
 
     Read (fileName) {
         const filePath = path + "/" + fileName;
+        if(fs.existsSync(filePath) == false) return null;
+        const result = JSON.parse(fs.readFileSync( filePath));
+        return result;
     }
 
     Check() {

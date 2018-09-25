@@ -29,7 +29,7 @@ class AccountHandle {
         let s4 = s3 + v;
         let addr = new bs58().encode(this.Hex2Array(s4));
         return {
-            'secretKey': keyPair.secretKey,
+            'secretKey': secretKey,
             'publicKey': keyPair.publicKey,
             'addr': addr
         }
