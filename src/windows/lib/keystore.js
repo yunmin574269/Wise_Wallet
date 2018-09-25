@@ -6,6 +6,7 @@ const keccak512 = require('./sha3').keccak512;
 const argon2 = require('argon2');
 const fs = require('fs');
 const crypto = require('crypto');
+const uuidV4 = require('uuid/v4');
 const path = __dirname + "/../../../keystore";
 
 class KeyStore {
@@ -18,27 +19,39 @@ class KeyStore {
         keyStore.address = account.addr;
         keyStore.crypto = {};
         keyStore.crypto.cipher = "aes-256-ctr";
-        keyStore.crypto.ciphertext = "";
+        //keyStore.crypto.ciphertext = "";
         keyStore.crypto.cipherparams = {};
         keyStore.crypto.cipherparams.iv = crypto.randomBytes(16).toString('hex');  // must be 128 bit, random 
+
+        //const aesCtr = new aesjs.ModeOfOperation.ctr(key_256, new aesjs.Counter(5));
+        //var encryptedBytes = aesCtr.encrypt(textBytes);
+        
         keyStore.kdf = "Argon2id";
         keyStore.kdfparams = {};
         keyStore.kdfparams.timeCost = "4";
         keyStore.kdfparams.memoryCost = "4096";
         keyStore.kdfparams.parallelism = "2";
-        keyStore.kdfparams.salt = crypto.randomBytes(64).toString('hex'); // random
+        keyStore.kdfparams.salt = crypto.randomBytes(32).toString('hex'); // random
         keyStore.version = "1";
 
         const options = {
-            timeCost: 4, memoryCost: 4096, parallelism: 2, type: argon2.argon2id, hashLength: 64, 
+            timeCost: 4, memoryCost: 4096, parallelism: 2, type: argon2.argon2id, hashLength: 32, 
             version: 0x13, raw: true
         };
-        const pwd_buf = Buffer.from(pwd, 'ascii');
-        const pwd_sha3 = keccak512(pwd_buf);
-        const pwd_hash = keyStore.kdfparams.salt + pwd_sha3;
-        keyStore.mac = (await argon2.hash(pwd_hash, options)).toString('hex'); 
+        const p1 = Buffer.from(pwd, 'ascii').toString('hex');
+        const s1 = keyStore.kdfparams.salt + p1;
+        const derivedKey = await argon2.hash(s1, options);
 
-        keyStore.id = "";
+        const vi = Buffer.from(keyStore.crypto.cipherparams.iv, 'hex');
+        const aesCtr = new aesjs.ModeOfOperation.ctr(derivedKey, new aesjs.Counter(vi));
+        const encryptedBytes = aesCtr.encrypt(account.secretKey);
+        keyStore.crypto.ciphertext = aesjs.utils.hex.fromBytes(encryptedBytes);
+
+        const dc = derivedKey.toString('hex') + keyStore.crypto.ciphertext;
+        const dc_buf = Buffer.from(dc, 'hex');
+        keyStore.mac = keccak512(dc_buf);
+
+        keyStore.id = uuidV4();
 
         return keyStore;
     }

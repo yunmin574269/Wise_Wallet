@@ -7,11 +7,12 @@
   },
   "devDependencies": {
     "electron": "^2.0.8",
-    "eslint": "^5.5.0"
+    "eslint": "^5.5.0",
+    "electron-rebuild": "^1.8.2"
   },
   "dependencies": {
     "argon2": "^0.19.3",
-    "electron-rebuild": "^1.8.2",
-    "sqlite3": "^4.0.2"
+    "sqlite3": "^4.0.2",
+    "uuid": "^3.3.2"
   }
 }
