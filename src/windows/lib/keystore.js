@@ -26,16 +26,17 @@ class KeyStore {
         keyStore.kdfparams.timeCost = "4";
         keyStore.kdfparams.memoryCost = "4096";
         keyStore.kdfparams.parallelism = "2";
-        keyStore.kdfparams.salt = crypto.randomBytes(32).toString('hex'); // random
+        keyStore.kdfparams.salt = crypto.randomBytes(64).toString('hex'); // random
         keyStore.version = "1";
 
         const options = {
-            timeCost: 4, memoryCost: 4096, parallelism: 2, type: argon2.argon2id
+            timeCost: 4, memoryCost: 4096, parallelism: 2, type: argon2.argon2id, hashLength: 64, 
+            version: 0x13, raw: true
         };
         const pwd_buf = Buffer.from(pwd, 'ascii');
         const pwd_sha3 = keccak512(pwd_buf);
         const pwd_hash = keyStore.kdfparams.salt + pwd_sha3;
-        keyStore.mac = await argon2.hash(pwd_hash, options); 
+        keyStore.mac = (await argon2.hash(pwd_hash, options)).toString('hex'); 
 
         keyStore.id = "";
 
