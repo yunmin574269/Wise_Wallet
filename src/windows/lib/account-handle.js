@@ -78,12 +78,7 @@ class AccountHandle {
             if(typeof secretKey[i] !== 'number') return false;
             if(secretKey[i] > 0xff) return false;
         }
-        const MaxVal = [
-            0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 
-            0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xfe,
-            0xba, 0xae, 0xdc, 0xe6, 0xaf, 0x48, 0xa0, 0x3b,
-            0xbf, 0xd2, 0x5e, 0x8c, 0xd0, 0x36, 0x41, 0x41
-        ];
+        const MaxVal = Buffer.from('1000000000000000000000000000000014def9dea2f79cd65812631a5cf5d3ec', 'hex');
         for(let i=0; i<MaxVal.length; i++) {
             if(MaxVal[i] < secretKey[i]) {
                 return false;
