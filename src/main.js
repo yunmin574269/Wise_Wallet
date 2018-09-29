@@ -10,6 +10,8 @@ const IpcMainHandle = require('./windows/lib/ipcmain-handle');
 const nacl = require('./windows/lib/nacl.min.js');
 //const AccountHandle = require('./windows/lib/account-handle');
 const KeyStore = require('./windows/lib/keystore');
+require('../test/GetMaxNum');
+const Verification = require('./windows/lib/Verification');
 
 class Main{
     constructor() {
@@ -25,9 +27,11 @@ class Main{
         //this.test();
         //let keyStore = new AccountHandle().CreateKeyStore();
         const keystore = new KeyStore();
-        // const savefile = await keystore.Create('123456');
+        const savefile = await keystore.Create('123456');
         // keystore.Save(savefile);
         await keystore.DecryptSecretKey('1BYryVWkZJki9s3YYSS9pZhwApnG9qLrw3', '123456');
+
+        Verification.AddressVerify('1BYryVWkZJki9s3YYSS9pZhwApnG9qLrw3');
     }
 
     // test() {
