@@ -20,7 +20,7 @@ class AccountHandle {
         let keyPair = this.createKeyPairBySecretKey(secretKey);
         
         let s1 = keccak512(keyPair.publicKey);
-        let s2 = new hash.RMD160().hex(this.Hex2Str(s1));
+        let s2 = new hash.RMD160({'utf8':false}).hex(this.Hex2Str(s1));
         let s3 = '00' + s2;
         if(netType == NetType.Test_Net) {
             s3 = 'S'.charCodeAt() + s2;
@@ -69,6 +69,7 @@ class AccountHandle {
             secretKey = crypto.randomBytes(32);
         }
         while(!this.verifyKey(secretKey));
+
         return secretKey;
     }
 
@@ -91,11 +92,11 @@ class AccountHandle {
     }
 
     Hex2Str(hex) {
-        //let ret = '';
+        // let ret = '';
         // for(let i=0; i<hex.length; i+=2) {
         //     ret += String.fromCharCode(parseInt(hex.substr(i,2), 16));
         // }
-        //return ret;
+        // return ret;
 
         const obj = Buffer.from(hex, 'hex');
         return obj.toString('latin1');

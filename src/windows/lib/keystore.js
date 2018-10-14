@@ -36,7 +36,7 @@ class KeyStore {
 
         const salt = Buffer.from(keyStore.kdfparams.salt, 'hex');
         const options = {
-            timeCost: 4, memoryCost: 4096, parallelism: 2, type: argon2.argon2id, hashLength: 32, 
+            timeCost: 4, memoryCost: 20480, parallelism: 2, type: argon2.argon2id, hashLength: 32, 
             version: 0x13, raw: true, salt
         };
         const p1 = Buffer.from(pwd, 'ascii').toString('hex');
