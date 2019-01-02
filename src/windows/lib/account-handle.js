@@ -2,6 +2,7 @@
 
 const bs58 = require('./base58');
 const keccak512 = require('./sha3').keccak512;
+const keccak256 = require('./sha3').keccak256;
 const hash = require('./hashes.js');
 const nacl = require('./nacl.min.js');
 const crypto = require('crypto');
@@ -18,20 +19,20 @@ class AccountHandle {
     createAccount (netType = NetType.Public_Net) {
         const secretKey = this.createSecretKey();
         let keyPair = this.createKeyPairBySecretKey(secretKey);
-        
-        let s1 = keccak512(keyPair.publicKey);
-        let s2 = new hash.RMD160({'utf8':false}).hex(this.Hex2Str(s1));
-        let s3 = '00' + s2;
-        if(netType == NetType.Test_Net) {
-            s3 = 'S'.charCodeAt() + s2;
-        }
-        let v = keccak512(this.Hex2Array(s3)).substring(0, 8);
-        let s4 = s3 + v;
-        let addr = new bs58().encode(this.Hex2Array(s4));
+        let s1 = keccak256(keyPair.publicKey);
+        let s2="WXS"+s1.substring(41,s1.length-1);//测试链WXS，实际WXC
+        //let s2 = new hash.RMD160({'utf8':false}).hex(this.Hex2Str(s1));
+        //let s3 = '00' + s2;
+        // if(netType == NetType.Test_Net) {
+        //     s3 = 'S'.charCodeAt() + s2;
+        // }
+        // let v = keccak512(this.Hex2Array(s3)).substring(0, 8);
+        // let s4 = s3 + v;
+        // let addr = new bs58().encode(this.Hex2Array(s4));
         return {
             'secretKey': secretKey,
             'publicKey': keyPair.publicKey,
-            'addr': addr
+            'addr': s2
         }
     }
 
@@ -59,20 +60,22 @@ class AccountHandle {
         return new nacl.sign.keyPair();
     }
 
+    //创建密钥对
     createKeyPairBySecretKey(secretKey) {
         return new nacl.sign.keyPair.fromSeed(secretKey);
     }
 
+    //创建密钥
     createSecretKey() {
         let secretKey;
         do {
             secretKey = crypto.randomBytes(32);
         }
         while(!this.verifyKey(secretKey));
-
         return secretKey;
     }
 
+    //密钥验证
     verifyKey (secretKey) {
         if(secretKey.length != 32) return false;
         for (let i=0; i<32; i++) {

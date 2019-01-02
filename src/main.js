@@ -1,6 +1,6 @@
 "use strict";
 
-const {app, ipcMain} = require('electron');
+const {app, ipcMain,dialog} = require('electron');
 
 const SplashWindow = require('./windows/controllers/splash');
 const SettingWindow = require('./windows/controllers/settings');
@@ -10,7 +10,7 @@ const IpcMainHandle = require('./windows/lib/ipcmain-handle');
 const nacl = require('./windows/lib/nacl.min.js');
 //const AccountHandle = require('./windows/lib/account-handle');
 const KeyStore = require('./windows/lib/keystore');
-require('../test/GetMaxNum');
+// require('../test/GetMaxNum');
 const Verification = require('./windows/lib/Verification');
 
 class Main{
@@ -24,14 +24,20 @@ class Main{
         new IpcMainHandle().init();
         new SqliteHandle().init();
         this.initApp(); 
+        this.initEvent();
         //this.test();
         //let keyStore = new AccountHandle().CreateKeyStore();
         const keystore = new KeyStore();
-        const savefile = await keystore.Create('123456');
-        // keystore.Save(savefile);
-        await keystore.DecryptSecretKey('1BYryVWkZJki9s3YYSS9pZhwApnG9qLrw3', '123456');
+        //创建keystore
+        //const savefile = await keystore.Create('123456');
+        //保存keystore
+        //keystore.Save(savefile);
+        //根据keystore和密码返回私钥
+        //await keystore.DecryptSecretKey('WXSc6cc0fc724c44276beb642@1545967555087', '123456');
+        //校验地址
+        //Verification.AddressVerify('WXSc6cc0fc724c44276beb642');
 
-        Verification.AddressVerify('1BYryVWkZJki9s3YYSS9pZhwApnG9qLrw3');
+          
     }
 
     // test() {
@@ -44,17 +50,26 @@ class Main{
     //     new AccountHandle().createAccountWithPubKey(keyPair.publicKey);
     // }
 
-    // initEvent() {
-    //     ipcMain.on('get-accounts', (event, arg) => {
-    //         console.log(arg) // prints "ping"
-    //         event.sender.send('accounts', 'pong')
-    //       });
-    // }
+    initEvent() {
+        //账户另存为
+        ipcMain.on('save-dialog', (event) => {
+            const options = {
+                title: '保存文本',
+                filters: [
+                  { name: 'Custom File Type', extensions: ['text'] }
+                ]
+            }
+            dialog.showSaveDialog(options, (filename) => {
+              event.sender.send('saved-file', filename)
+            })
+        })
+    }
 
     initApp() {
         app.on('ready', ()=> {
             this.createSplashWindow();
             this.createIndexWindow();
+            //dialog.showErrorBox("提示","你出现错误拉");
             setTimeout(function(obj) {
                 obj.splashWindow.close();
                 obj.indexWindow.show();
@@ -77,6 +92,7 @@ class Main{
     createIndexWindow() {
         this.indexWindow = new IndexWindow();
     }
+
 }
 
 new Main().init();
