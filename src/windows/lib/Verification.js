@@ -2,6 +2,7 @@ const bs58 = require('./base58');
 const keccak512 = require('./sha3').keccak512;
 
 class Verification {
+    //密钥校验
     static SecretKeyVerify (key) {
         if (key.length == undefined) return false;
         if (key.length != 32) return false;
@@ -21,6 +22,7 @@ class Verification {
         return true;
     }
 
+    //公钥校验
     static PublicKeyVerify (key) {
         if (key.length == undefined) return false;
         if (key.length != 32) return false;
@@ -32,14 +34,21 @@ class Verification {
         return true;
     }
 
+    //地址校验
     static AddressVerify (addr) {
-        if (addr.length == undefined) return false;
-        const BASE58 = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
+        //地址不一样了，这边都要修改
+        if (addr.length == undefined || addr.length!=25) return false;
+        //base58添加了0
+        const BASE58 = '0123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
         for (let i=0; i<addr.length; i++) {
             if (BASE58.indexOf(addr[i]) == -1) return false;
         }
 
-        const addr_decode = new bs58().decode(addr);
+        //地址前缀
+        let s=addr.substring(0,3);
+        if(s!="WXS" && s!="WXC" ) return false;
+
+        /* const addr_decode = new bs58().decode(addr);
         let s4 = addr_decode.toString('hex');
         let s3 = s4.substring(0, s4.length-8);
         let v = s4.substring(s4.length-8);
@@ -47,7 +56,7 @@ class Verification {
         let v1 = keccak512(s3_buffer).substring(0, 8);
         
         if (v != v1) return false;
-        if (s3_buffer[0] != 0x00 &&  s3_buffer[0] != 0x53) return false;
+        if (s3_buffer[0] != 0x00 &&  s3_buffer[0] != 0x53) return false; */
 
         return true;
     }
