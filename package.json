@@ -4,12 +4,27 @@
   "main": "src/main.js",
   "scripts": {
     "start": "electron src/main.js",
-    "packager": "electron-packager ./ Wallet --all --out ./OutApp --electron-version 2.0.8 --overwrite"
+    "packager": "electron-packager ./ Wallet electron --platform linux --arch x64 --out ./OutApp --electron-version 2.0.8 --overwrite",
+    "dist": "electron-builder --win --x64"
+  },
+  "build": {
+    "appId": "org.shennongmin.QuickStart",
+    "copyright": "Open Totally",
+    "compression": "normal",
+    "nsis": {
+        "oneClick": true,
+        "perMachine": true,
+        "runAfterFinish": true
+    },
+    "win": {
+      "target": "nsis"
+    }
   },
   "devDependencies": {
     "electron": "^2.0.8",
     "electron-packager": "^12.2.0",
     "electron-rebuild": "^1.8.2",
+    "electron-builder": "^20.38.4",
     "eslint": "^5.5.0"
   },
   "dependencies": {

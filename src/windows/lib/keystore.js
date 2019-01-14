@@ -7,7 +7,8 @@ const argon2 = require('argon2');
 const fs = require('fs');
 const crypto = require('crypto');
 const uuidV4 = require('uuid/v4');
-const path = __dirname + "/../../../keystore";
+var os = require("os")
+const path=os.homedir()+"/.wisdom";
 
 class KeyStore {
     constructor() {
@@ -102,8 +103,12 @@ class KeyStore {
 
     Save (keystore) {
         if(!fs.existsSync(path)) fs.mkdirSync(path);
+        const pathkey=path+"/keystore";
+        if(!fs.existsSync(pathkey)){
+            fs.mkdirSync(pathkey);
+        }
         let time=new Date().getTime();
-        const filePath = path + "/" + keystore.address+"@"+time;
+        const filePath = pathkey + "/" + keystore.address+"@"+time;
         const content = JSON.stringify(keystore, null, 4);
 
         fs.writeFile(filePath, content, {flag: 'w'}, function (err) {

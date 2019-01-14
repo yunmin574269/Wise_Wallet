@@ -16,11 +16,11 @@
     <!-- <h1><strong></strong> overview</h1> -->
     <div class="wallet-box-list" style="text-align: center;">
       <div id="inputpass">
-        <input type="text" id="passwd"></input>
+          <span style="font-weight: bolder;">请输入密码</span>
+          <br>
+          <input type="text" id="passwd" style="margin-top: 25px;"></input>
         <button type="button" value="确认" id="result">确认</button>
       </div>
-      <br>
-      <br>
       <p style="text-align: center;"><span id="script" ></span></p>
     </div>
   </main>
@@ -38,7 +38,7 @@
     informationBtn.addEventListener('click', (event) => {
         var path;
         var type;
-        session.defaultSession.cookies.get({ url: "http://www.github.com" }, function (error, cookies) { 
+        session.defaultSession.cookies.get({ url: "http://www.git.com" }, function (error, cookies) { 
             path=cookies[0].value;
             var passwd=$.trim($('#passwd').val());
             if(passwd==""){
@@ -54,11 +54,10 @@
             }
             SecretKey.then(function (rs) {
               if(rs!=null){
-                var imgpath=path.split("/");
-                var fullimgpath="";
-                for(var x=1;x<imgpath.length-1;x++){
-                  fullimgpath+="/"+imgpath[x];
-                }
+                var imgpath=path.split("keystore");
+                var fullimgpath=imgpath[0];
+                var paths=fullimgpath.charAt(fullimgpath.length - 1);
+                fullimgpath=fullimgpath+"keystore"+paths;
                 var imgaddress=fullimgpath+"/"+josn.address+".png";
                 var josnbuff = new Buffer(JSON.stringify(josn));
                 // var text = josnbuff.toString('base64');
@@ -77,6 +76,8 @@
                   var html='<img src="'+imgaddress+'"alt="qrcode" style="height:300px;wigth:300px">';
                   $('#inputpass').html("");
                   $('#script').append(html);
+                  $('.dapp-content').css("padding-left","0px");
+                  $('.dapp-content').css("padding-right","0px");
                 }))
               }else{
                 alert("获取二维码失败，请检查keystore和密码是否正确！");

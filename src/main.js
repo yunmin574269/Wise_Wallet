@@ -29,11 +29,11 @@ class Main{
         //let keyStore = new AccountHandle().CreateKeyStore();
         const keystore = new KeyStore();
         //创建keystore
-        //const savefile = await keystore.Create('123456');
+        const savefile = await keystore.Create('123456');
         //保存keystore
-        //keystore.Save(savefile);
+        keystore.Save(savefile);
         //根据keystore和密码返回私钥
-        //await keystore.DecryptSecretKey('WXSc6cc0fc724c44276beb642@1545967555087', '123456');
+        await keystore.DecryptSecretKey('WXSc6cc0fc724c44276beb642@1545967555087', '123456');
         //校验地址
         //Verification.AddressVerify('WXSc6cc0fc724c44276beb642');
 
@@ -63,6 +63,12 @@ class Main{
               event.sender.send('saved-file', filename)
             })
         })
+
+                // ipcMain.on('test_dirname', (event) => {
+        //     var path=(__dirname);
+        //     console.log(path);
+        //     event.sender.send('get_dirname', path)
+        // })
     }
 
     initApp() {
