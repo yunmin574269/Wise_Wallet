@@ -20,12 +20,13 @@ class clidwindow{
     const modalPath = path.join(`file://${path.join(__dirname, '../views/inputpasswd.html')}`)
     win= new BrowserWindow({ 
       width: 400, 
-      height: 105,
-      title:'请输入密码',
+      height: 200,
+      title:'设置',
       parent: top, 
       modal: true,
       show: false,
-      resizable:false,
+      movable: true,
+      resizable: true,
       autoHideMenuBar: true })
     //Menu.setApplicationMenu(null);
     win.on('closed', function () { win = null })
@@ -42,24 +43,37 @@ qrcode(top,pathss){
     qr= new BrowserWindow({ 
       width: 400, 
       height: 400,
-      title:'请输入密码',
+      title:'设置',
       parent: top, 
       modal: true,
       show: false,
-      resizable:false,
+      movable: true,
+      resizable: true,
       autoHideMenuBar: true })
     //Menu.setApplicationMenu(null);
     qr.on('closed', function () { win = null })
     qr.loadURL(modalPath)
     qr.show()
     //let winweb=win.webContents;
-    this.setCookies('pathss',pathss);
+    this.setCookiesqr('pathss',pathss);
     //qr.webContents.openDevTools();
   }
 
 setCookies(name, value){
   const cookie = {
     url: "http://www.github.com",
+    name: name,
+    value: value
+    //expirationDate: date
+  };
+  session.defaultSession.cookies.set(cookie, (error) => {
+    if (error) console.error(error);
+  });
+}
+
+setCookiesqr(name, value){
+  const cookie = {
+    url: "http://www.git.com",
     name: name,
     value: value
     //expirationDate: date
